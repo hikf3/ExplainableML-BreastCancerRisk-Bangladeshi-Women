@@ -1,7 +1,10 @@
 # ExplainableML-BreastCancerRisk-Bangladeshi-Women
 
 This repository contains the codebase for the research study:  
-**"Understanding Cancer Risk Among Bangladeshi Women: An Explainable Machine Learning Approach to Socio-Reproductive Factors Using Tertiary Hospital Data."** Link: https://www.preprints.org/manuscript/202504.2400/v1
+
+**"Understanding Cancer Risk Among Bangladeshi Women: An Explainable Machine Learning Approach to Socio-Reproductive Factors Using Tertiary Hospital Data."** 
+
+Link: https://www.preprints.org/manuscript/202504.2400/v1
 
 We developed and evaluated machine learning models to identify socio-demographic and reproductive predictors of two breast cancer subtypes—**Hormone Receptor-Positive (HR⁺)** and **Triple-Negative Breast Cancer (TNBC)**—using structured data collected from a tertiary cancer hospital in Bangladesh. We further employed **Shapley value-based explainability** to interpret model predictions.
 
