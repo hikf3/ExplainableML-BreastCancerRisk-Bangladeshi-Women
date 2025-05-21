@@ -37,57 +37,6 @@ colnames(shap_triple) <- paste0("SHAP_", colnames(shap_triple))
 shap_hormone <- cbind(train_data, shap_hormone)
 shap_triple <- cbind(train_data, shap_triple)
 
-###################### Compute Menarche age wise SHAP values for all variables ############
-
-library(dplyr)
-
-# Select the required columns
-shap_columns <- colnames(shap_hormone)[24:43]
-
-# Function to compute mean SHAP values grouped by Age_Group
-compute_mean_shap <- function(data, shap_columns) {
-  data %>%
-    group_by(menarchae) %>%
-    summarise(across(
-      all_of(shap_columns),
-      ~ mean(.x, na.rm = TRUE),
-      .names = "Mean_{.col}"
-    ), .groups = "drop")
-}
-
-# Compute mean SHAP values for Hormone Positive and Triple Negative
-mean_shap_hormone <- compute_mean_shap(shap_hormone, shap_columns)
-mean_shap_triple <- compute_mean_shap(shap_triple, shap_columns)
-
-# Combine the results into a single dataset
-combined_means <- mean_shap_hormone %>%
-
-  rename_with(~ gsub("Mean_", "Hormone_", .x), -menarchae) %>%
-  left_join(
-    mean_shap_triple %>%
-
-      rename_with(~ gsub("Mean_", "Triple_", .x), -menarchae),
-    by = "menarchae"
-  )
-
-# Compute relative contribution
-relative_contributions <- combined_means %>%
-  mutate(across(
-    starts_with("Hormone_"),
-    ~ get(sub("Hormone_", "Triple_", cur_column())) / .x,
-    .names = "RC_{.col}"
-  ))
-
-# Prepare the final dataset with Age_Group and relative contributions
-relative_contributions_final <- relative_contributions %>%
-  select(menarchae, starts_with("RC_")) %>%
-  rename_with(~ gsub("RC_Hormone_", "", .x), -menarchae)
-
-# Save the final dataset
-write.csv(relative_contributions_final, "Relative_Contributions_Menarche.csv", row.names = FALSE)
-
-# View the final dataset
-print(relative_contributions_final)
 
 ###################### Wilcox test ############
 
